@@ -1,0 +1,8 @@
+{
+  "runtimeOptions": {
+    "additionalProbingPaths": [
+      "C:\\Users\\beasty\\.dotnet\\store\\|arch|\\|tfm|",
+      "C:\\Users\\beasty\\.nuget\\packages"
+    ]
+  }
+}
