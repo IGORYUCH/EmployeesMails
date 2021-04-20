@@ -25,14 +25,14 @@ namespace EmployeesMails_.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Mail>>> GetMail()
         {
-            return await _context.Mail.Include(f => f.From_employee).Include(a => a.To_employee).ToListAsync();
+            return await _context.Mail.Include("From_employee").Include("To_employee").ToListAsync();
         }
 
         // GET: api/Mails/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Mail>> GetMail(int id)
         {
-            Mail mail = await _context.Mail.Include(f => f.To_employee).Include(a => a.From_employee).FirstOrDefaultAsync(x => x.Id == id);
+            Mail mail = await _context.Mail.Include("To_employee").Include("From_employee").FirstOrDefaultAsync(x => x.Id == id);
 
             if (mail == null)
             {
@@ -61,7 +61,13 @@ namespace EmployeesMails_.Controllers
             {
                 return NotFound(String.Format("Employee receiver with id {0} not found", postMail.To_employeeId));
             }
-            Mail mail = new Mail {Name=postMail.Name, Content=postMail.Content, From_employee=fromEmployee, To_employee=toEmployee, Date=postMail.Date};
+            Mail mail = new Mail {
+                Name=postMail.Name, 
+                Content=postMail.Content, 
+                From_employee=fromEmployee, 
+                To_employee=toEmployee, 
+                Date=postMail.Date
+            };
             
             _context.Mail.Add(mail);
             await _context.SaveChangesAsync();

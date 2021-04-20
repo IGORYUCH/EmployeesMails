@@ -32,9 +32,13 @@ namespace EmployeesMails_.Controllers
             foreach (Employee employee in employees)
             {
                 int id = employee.Id;
-                int MailsSent = await _context.Mail.Where(f => f.From_employee.Id == employee.Id).CountAsync();
-                int MailsGot = await _context.Mail.Where(f => f.To_employee.Id == employee.Id).CountAsync();
-                var extendedEmployee = new { Id = id, Name = employee.Name, Surname = employee.Surname, Department = employee.Department, MailsSent = MailsSent, MailsGot = MailsGot };
+                var extendedEmployee = new { 
+                    Id = id,
+                    Name = employee.Name,
+                    Surname = employee.Surname,
+                    Department = employee.Department
+                };
+
                 extendedEmployees.Add(extendedEmployee);
             }
             return extendedEmployees;
@@ -52,16 +56,18 @@ namespace EmployeesMails_.Controllers
                 return NotFound();
             }
 
-            var mailsSent = await _context.Mail.Where(f => f.From_employee.Id == id).Include(a=> a.To_employee).ToListAsync();
-            var mailsGot = await _context.Mail.Where(f => f.To_employee.Id == id).Include(a=> a.From_employee).ToListAsync();
-            var extendedEmployee = new {Id=employee.Id, Name = employee.Name, Surname = employee.Surname, Department=employee.Department, MailsGot= mailsGot, MailsSent= mailsSent };
+            var mailsSent = await _context.Mail.Where(f => f.From_employee.Id == id).Include("To_employee").ToListAsync();
+            var mailsGot = await _context.Mail.Where(f => f.To_employee.Id == id).Include("From_employee").ToListAsync();
+            var extendedEmployee = new {
+                Id=employee.Id, 
+                Name = employee.Name, 
+                Surname = employee.Surname, 
+                Department=employee.Department, 
+                MailsGot= mailsGot, 
+                MailsSent = mailsSent 
+            };
 
             return extendedEmployee;
-        }
-
-        private bool EmployeeExists(int id)
-        {
-            return _context.Employee.Any(e => e.Id == id);
         }
     }
 }

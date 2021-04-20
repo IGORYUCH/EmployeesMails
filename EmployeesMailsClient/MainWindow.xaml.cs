@@ -9,13 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+
 
 namespace EmployeesMailsClient
 {
@@ -25,7 +19,15 @@ namespace EmployeesMailsClient
     public partial class MainWindow : Window
     {
         private ObservableCollection<Employee> employees = new ObservableCollection<Employee>();
-        private ObservableCollection<Mail1> mails = new ObservableCollection<Mail1>();
+        private ObservableCollection<Mail> mails = new ObservableCollection<Mail>();
+
+        private string host = "localhost";
+        private string port = "44345";
+        private string mailsUrl = "https://{0}:{1}/api/Mails/";
+        private string mailUrl = "https://{0}:{1}/api/Mails/{2}";
+        private string employeesUrl = "https://{0}:{1}/api/Employees/";
+        private string employeeUrl = "https://{0}:{1}/api/Employees/{2}";
+
         public MainWindow()
         {
             InitializeComponent();
@@ -36,48 +38,48 @@ namespace EmployeesMailsClient
             EmployeeCombo.ItemsSource = employees;
             AddMailSenderCombo.ItemsSource = employees;
             AddMailReceiverCombo.ItemsSource = employees;
-            MailsCombo.ItemsSource = mails;
+            DeleteMailCombo.ItemsSource = mails;
         }
 
-        private ObservableCollection<Mail1> GetMailsList()
+        private ObservableCollection<Mail> GetMailsList()
         {
-            string url = "https://localhost:44345/api/Mails";
+            string url = string.Format(mailsUrl, host, port);
             var json = new WebClient().DownloadString(url);
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<ObservableCollection<Mail1>>(json);
+            return JsonConvert.DeserializeObject<ObservableCollection<Mail>>(json);
         }
 
         private ObservableCollection<Employee> GetEmployeeList()
         {
-            string url = "https://localhost:44345/api/Employees";
+            string url = string.Format(employeesUrl, host, port);
             var json = new WebClient().DownloadString(url);
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<ObservableCollection<Employee>>(json);
+            return JsonConvert.DeserializeObject<ObservableCollection<Employee>>(json);
         }
 
-        private List<Mail1> GetSentMails(int employeeId)
+        private List<Mail> GetSentMails(int employeeId)
         {
-            string url = String.Format("https://localhost:44345/api/Employees/{0}", employeeId);
+            string url = string.Format(employeeUrl, host, port, employeeId);
             var json = new WebClient().DownloadString(url);
-            Employee3 e = Newtonsoft.Json.JsonConvert.DeserializeObject<Employee3>(json);
-            return e.mailsSent;
+            EmployeeWithMails employee = JsonConvert.DeserializeObject<EmployeeWithMails>(json);
+            return employee.mailsSent;
         }
 
-        private List<Mail1> GetGotMails(int employeeId)
+        private List<Mail> GetGotMails(int employeeId)
         {
-            string url = String.Format("https://localhost:44345/api/Employees/{0}", employeeId);
+            string url = string.Format(employeeUrl, host, port, employeeId);
             var json = new WebClient().DownloadString(url);
-            Employee3 e = Newtonsoft.Json.JsonConvert.DeserializeObject<Employee3>(json);
-            return e.mailsGot;
+            EmployeeWithMails employee = JsonConvert.DeserializeObject<EmployeeWithMails>(json);
+            return employee.mailsGot;
         }
 
         private void FillSentDataGrid(int employeeId)
         {
-            List<Mail1> employeeSentMails = GetSentMails(employeeId);
+            List<Mail> employeeSentMails = GetSentMails(employeeId);
             SentDataGrid.ItemsSource = employeeSentMails;
         }
 
         private void FillGotDataGrid(int employeeId)
         {
-            List<Mail1> employeeGotMails = GetGotMails(employeeId);
+            List<Mail> employeeGotMails = GetGotMails(employeeId);
             GotDataGrid.ItemsSource = employeeGotMails;
         }
 
@@ -85,8 +87,7 @@ namespace EmployeesMailsClient
         {
             EmployeeDepartmentBox.Text = "";
 
-            ComboBox comboBox = (ComboBox)EmployeeCombo;
-            Employee selectedEmployee = (Employee)comboBox.SelectedItem;
+            Employee selectedEmployee = (Employee)EmployeeCombo.SelectedItem;
             if (selectedEmployee != null)
             {
                 EmployeeDepartmentBox.Text = selectedEmployee.department;
@@ -97,16 +98,12 @@ namespace EmployeesMailsClient
 
         private void MailsCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            ComboBox comboBox = (ComboBox)sender;
-            Mail1 selectedMail = (Mail1)comboBox.SelectedItem;
+            Mail selectedMail = (Mail)DeleteMailCombo.SelectedItem;
             
             if (selectedMail != null)
             {
-                string senderFullName = selectedMail.from_employee.name + " " + selectedMail.from_employee.surname;
-                string receiverFullName = selectedMail.to_employee.name + " " + selectedMail.to_employee.surname;
-
-                DeleteMailSenderBox.Text = senderFullName;
-                DeleteMailReceiverBox.Text = receiverFullName;
+                DeleteMailSenderBox.Text = selectedMail.from_employee.fullName;
+                DeleteMailReceiverBox.Text = selectedMail.to_employee.fullName;
                 DeleteMailNameBox.Text = selectedMail.name;
                 DeleteMailContentBox.Text = selectedMail.content;
                 DeleteMailDateBox.Text = selectedMail.date;
@@ -115,10 +112,10 @@ namespace EmployeesMailsClient
 
         private void DeleteMailButton_Click(object sender, RoutedEventArgs e)
         {
-            Mail1 selectedMail = (Mail1)MailsCombo.SelectedItem;
+            Mail selectedMail = (Mail)DeleteMailCombo.SelectedItem;
             if (selectedMail != null)
             {
-                string url = String.Format("https://localhost:44345/api/Mails/{0}", selectedMail.id);
+                string url = string.Format(mailUrl, host, port, selectedMail.id);
 
                 WebRequest request = WebRequest.Create(url);
                 request.Method = "DELETE";
@@ -126,7 +123,7 @@ namespace EmployeesMailsClient
 
                 if (response.StatusCode == HttpStatusCode.OK)
                 {
-                    MailsCombo.SelectedItem = null;
+                    DeleteMailCombo.SelectedItem = null;
 
                     DeleteMailSenderBox.Text = "";
                     DeleteMailReceiverBox.Text = "";
@@ -153,19 +150,8 @@ namespace EmployeesMailsClient
             }
         }
 
-        private void AddMailSenderCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
-
-        private void AddMailReceiverCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
-
         private void AddMailButton_Click(object sender, RoutedEventArgs e)
         {
-
             Employee senderEmployee = (Employee)AddMailSenderCombo.SelectedItem;
             Employee receiverEmployee = (Employee)AddMailReceiverCombo.SelectedItem;
 
@@ -194,15 +180,23 @@ namespace EmployeesMailsClient
                 return;
             }
 
-            AddingMail addingMail = new AddingMail { Name = mailName, Content = mailContent, From_employeeId = senderEmployee.id, To_employeeId = receiverEmployee.id, Date = DateTime.Now };
-            string json = Newtonsoft.Json.JsonConvert.SerializeObject(addingMail);
+            object mailToAdd = new {
+                Name = mailName,
+                Content = mailContent,
+                From_employeeId = senderEmployee.id,
+                To_employeeId = receiverEmployee.id,
+                Date = DateTime.Now 
+            };
+
+            string json = JsonConvert.SerializeObject(mailToAdd);
             WebClient webClient = new WebClient();
             webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
 
-            var res = webClient.UploadString("https://localhost:44345/api/Mails", json);
-            Mail1 newMail = Newtonsoft.Json.JsonConvert.DeserializeObject<Mail1>(res);
-            mails.Add(newMail);
+            string url = string.Format(mailsUrl, host, port);
 
+            var res = webClient.UploadString(url, json);
+            Mail newMail = JsonConvert.DeserializeObject<Mail>(res);
+            mails.Add(newMail);
 
             Employee selectedEmployee = (Employee)EmployeeCombo.SelectedItem;
             if (selectedEmployee != null)
