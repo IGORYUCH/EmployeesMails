@@ -51,3 +51,7 @@ C:\Users\beasty\Desktop\EmployeesMailsClient\obj\Debug\EmployeesMailsClient.cspr
 C:\Users\beasty\Desktop\EmployeesMailsClient\obj\Debug\EmployeesMailsClient.csproj.CopyComplete
 C:\Users\beasty\Desktop\EmployeesMailsClient\obj\Debug\EmployeesMailsClient.exe
 C:\Users\beasty\Desktop\EmployeesMailsClient\obj\Debug\EmployeesMailsClient.pdb
+C:\Users\beasty\Desktop\EmployeesMailsClient\obj\Debug\dark.baml
+C:\Users\beasty\Desktop\EmployeesMailsClient\obj\Debug\light.baml
+C:\Users\beasty\source\repos\EmployeesMails_\EmployeesMailsClient\obj\Debug\dark.baml
+C:\Users\beasty\source\repos\EmployeesMails_\EmployeesMailsClient\obj\Debug\light.baml

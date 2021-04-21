@@ -5,13 +5,21 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EmployeesMailsClient"
         mc:Ignorable="d"
-        Title="Окно" Height="450" Width="556">
-    <Grid>
-        <TabControl>
+        Title="Окно" Height="464.124" Width="619.81">
+
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="dark.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Grid Background="White">
+        <TabControl BorderThickness="0">
             <TabItem x:Name="EmployesMailsTab" Header="Письма сотрудников">
                 <Grid Background="#FFE5E5E5">
-                    <Grid Margin="10,10,222,351" Width="310" Height="30">
-                        <ComboBox x:Name="EmployeeCombo"  HorizontalAlignment="Right"  VerticalAlignment="Center" Width="228" SelectionChanged="EmployeeCombo_SelectionChanged">
+                    <Grid Margin="10,10,0,0" Width="310" Height="30" HorizontalAlignment="Left" VerticalAlignment="Top">
+                        <ComboBox x:Name="EmployeeCombo"  HorizontalAlignment="Right" VerticalAlignment="Center" Width="228" SelectionChanged="EmployeeCombo_SelectionChanged">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
                                     <ComboBoxItem Content="{Binding fullName}"/>
@@ -20,13 +28,13 @@
                         </ComboBox>
                         <Label x:Name="EmployeeLabel" Content="Сотрудник" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                     </Grid>
-                    <Grid Margin="10,45,222,316" Width="310" Height="30">
+                    <Grid Margin="10,45,0,0" Width="310" Height="30" HorizontalAlignment="Left" VerticalAlignment="Top">
                         <Label x:Name="EmployeeDepartmentLabel" Content="Отдел" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                         <TextBox x:Name="EmployeeDepartmentBox" HorizontalAlignment="Right" Height="23"  TextWrapping="Wrap" VerticalAlignment="Center" Width="228" Focusable="False"/>
                     </Grid>
-                    <GroupBox x:Name="SentAndGotGroup" Header="Письма сотрудника" Margin="0,84,0,0">
+                    <GroupBox x:Name="SentAndGotGroup" Header="Письма сотрудника" Foreground="Black" Margin="0,84,0,0">
                         <Grid Margin="0,0,-2,-1">
-                            <TabControl>
+                            <TabControl BorderThickness="0" >
                                 <TabItem x:Name="SentTab" Header="Отправленые">
                                     <Grid Background="#FFE5E5E5">
                                         <DataGrid x:Name="SentDataGrid" AutoGenerateColumns="False" CanUserAddRows="False">
@@ -61,16 +69,16 @@
             <TabItem x:Name="DeleteMailsTab" Header="Удалить письмо">
                 <Grid Background="#FFE5E5E5">
                     <Grid Background="#FFE5E5E5">
-                        <Grid Margin="10,117,222,244" Width="310" Height="30">
+                        <Grid Margin="10,117,0,0" Width="310" Height="30" VerticalAlignment="Top" HorizontalAlignment="Left">
                             <Label x:Name="DeleteMailNameLabel" Content="Заголовок" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                             <TextBox x:Name="DeleteMailNameBox" HorizontalAlignment="Right" Height="22" TextWrapping="Wrap" VerticalAlignment="Center" Width="213" Focusable="False"/>
                         </Grid>
-                        <Grid Margin="10,152,222,169" Height="70" Width="310">
+                        <Grid Margin="10,152,0,0" Height="70" Width="310" VerticalAlignment="Top" HorizontalAlignment="Left">
                             <Label x:Name="DeleteMailContentLabel" Content="Содержание" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                            <TextBox x:Name="DeleteMailContentBox" HorizontalAlignment="Right" Height="66" TextWrapping="Wrap" VerticalAlignment="Center" Width="213" Focusable="False"/>
+                            <TextBox x:Name="DeleteMailContentBox"   HorizontalAlignment="Right" Height="66" TextWrapping="Wrap" VerticalAlignment="Center" Width="213" Focusable="False"/>
                         </Grid>
-                        <Button x:Name="DeleteMailButton" Content="Удалить" HorizontalAlignment="Left" Margin="107,262,0,0" VerticalAlignment="Top" Width="213" Height="38" Click="DeleteMailButton_Click"/>
-                        <Grid Margin="10,10,222,349" Width="310" Height="32">
+                        <Button x:Name="DeleteMailButton"  Content="Удалить" Margin="107,262,0,0" Click="DeleteMailButton_Click" Height="38" VerticalAlignment="Top" HorizontalAlignment="Left" Width="213" />
+                        <Grid Margin="10,10,0,0" Width="310" Height="32" HorizontalAlignment="Left" VerticalAlignment="Top">
                             <ComboBox x:Name="DeleteMailCombo" HorizontalAlignment="Right" VerticalAlignment="Center" Width="213" SelectionChanged="MailsCombo_SelectionChanged">
                                 <ComboBox.ItemTemplate>
                                     <DataTemplate>
@@ -80,15 +88,15 @@
                             </ComboBox>
                             <Label x:Name="DeleteMailIdLabel" Content="Номер письма" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                         </Grid>
-                        <Grid Margin="10,47,222,314" Width="310" Height="30">
+                        <Grid Margin="10,47,0,0" Width="310" Height="30" VerticalAlignment="Top" HorizontalAlignment="Left">
                             <Label x:Name="DeleteMailSenderLabel" Content="Отправитель" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                             <TextBox x:Name="DeleteMailSenderBox" HorizontalAlignment="Right" Height="22" TextWrapping="Wrap" VerticalAlignment="Center" Width="213" Focusable="False"/>
                         </Grid>
-                        <Grid Margin="10,82,222,279" Width="310" Height="30">
+                        <Grid Margin="10,82,0,0" Width="310" Height="30" VerticalAlignment="Top" HorizontalAlignment="Left">
                             <Label x:Name="DeleteMailReceiverLabel" Content="Получатель" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                             <TextBox x:Name="DeleteMailReceiverBox" HorizontalAlignment="Right" Height="22" TextWrapping="Wrap" VerticalAlignment="Center" Width="213" Focusable="False"/>
                         </Grid>
-                        <Grid Margin="10,227,222,134" Width="310" Height="30">
+                        <Grid Margin="10,227,0,0" Width="310" Height="30" VerticalAlignment="Top" HorizontalAlignment="Left">
                             <Label x:Name="DeleteMailDateLabel" Content="Дата" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                             <TextBox x:Name="DeleteMailDateBox" HorizontalAlignment="Right" Height="23"  TextWrapping="Wrap" VerticalAlignment="Center" Width="213" Focusable="False"/>
                         </Grid>
@@ -97,7 +105,7 @@
             </TabItem>
             <TabItem x:Name="AddMailsTab" Header="Добавить письмо">
                 <Grid Background="#FFE5E5E5">
-                    <Grid Margin="10,10,222,351" Width="310" Height="30">
+                    <Grid Margin="10,10,0,0" HorizontalAlignment="Left" Width="310" Height="30" VerticalAlignment="Top">
                         <ComboBox  x:Name="AddMailSenderCombo" VerticalAlignment="Center" HorizontalAlignment="Right" Width="204">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
@@ -107,7 +115,7 @@
                         </ComboBox>
                         <Label Content="Отправитель" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                     </Grid>
-                    <Grid Margin="10,45,222,316" Width="310" Height="30">
+                    <Grid Margin="10,45,0,0" Width="310" HorizontalAlignment="Left" Height="30" VerticalAlignment="Top">
                         <ComboBox x:Name="AddMailReceiverCombo" HorizontalAlignment="Right" VerticalAlignment="Center" Width="204">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
@@ -117,15 +125,15 @@
                         </ComboBox>
                         <Label Content="Получатель" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                     </Grid>
-                    <Grid Margin="10,80,222,281" Width="310" Height="30">
+                    <Grid Margin="10,80,0,0" HorizontalAlignment="Left" Width="310" Height="30" VerticalAlignment="Top">
                         <Label Content="Заголовок" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                         <TextBox x:Name="AddMailNameBox" HorizontalAlignment="Right" Height="22" TextWrapping="Wrap" VerticalAlignment="Center" Width="204"/>
                     </Grid>
-                    <Grid Margin="10,115,222,206" Height="70" Width="310">
+                    <Grid Margin="10,115,0,0" Height="70" Width="310" HorizontalAlignment="Left" VerticalAlignment="Top">
                         <Label Content="Содержание" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                         <TextBox x:Name="AddMailContentBox" HorizontalAlignment="Right" Height="66" TextWrapping="Wrap" VerticalAlignment="Center" Width="204"/>
                     </Grid>
-                    <Button x:Name="AddMailButton" Content="Добавить" HorizontalAlignment="Left" Margin="116,190,0,0" VerticalAlignment="Top" Width="204" Height="40" Click="AddMailButton_Click"/>
+                    <Button x:Name="AddMailButton" Content="Добавить" Margin="116,190,0,0" Click="AddMailButton_Click" HorizontalAlignment="Left" Width="204" Height="40" VerticalAlignment="Top"/>
                 </Grid>
             </TabItem>
         </TabControl>

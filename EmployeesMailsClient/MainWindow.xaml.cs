@@ -39,6 +39,16 @@ namespace EmployeesMailsClient
             AddMailSenderCombo.ItemsSource = employees;
             AddMailReceiverCombo.ItemsSource = employees;
             DeleteMailCombo.ItemsSource = mails;
+
+
+
+            var uri = new Uri("dark.xaml", UriKind.Relative);
+            // загружаем словарь ресурсов
+            ResourceDictionary resourceDict = Application.LoadComponent(uri) as ResourceDictionary;
+            // очищаем коллекцию ресурсов приложения
+            Application.Current.Resources.Clear();
+            // добавляем загруженный словарь ресурсов
+            Application.Current.Resources.MergedDictionaries.Add(resourceDict);
         }
 
         private ObservableCollection<Mail> GetMailsList()
